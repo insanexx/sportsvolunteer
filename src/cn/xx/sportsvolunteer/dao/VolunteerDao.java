@@ -6,8 +6,8 @@ import cn.xx.sportsvolunteer.beans.Volunteer;
 
 public interface VolunteerDao {
 	public void add(Volunteer v);
-	public void delete(Volunteer v);
+	public void delete(String id);
 	public void update(Volunteer v);
-	public Volunteer get(String id);
-	public List<Volunteer> get(int pageIndex,int pageSize);
+	public Volunteer getById(String id);
+	public List<Volunteer> getList(int pageIndex,int pageSize);
 }

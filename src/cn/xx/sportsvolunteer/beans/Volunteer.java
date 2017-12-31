@@ -74,5 +74,10 @@ public class Volunteer {
 	public void setRegistertime(Date registertime) {
 		this.registertime = registertime;
 	}
-	
+	@Override
+	public String toString() {
+		return "Volunteer [id=" + id + ", age=" + age + ", username=" + username + ", password=" + password
+				+ ", gender=" + gender + ", address=" + address + ", idcardnumber=" + idcardnumber + ", phonenumber="
+				+ phonenumber + ", specialskill=" + specialskill + ", registertime=" + registertime + "]";
+	}
 }
