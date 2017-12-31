@@ -6,8 +6,8 @@ import cn.xx.sportsvolunteer.beans.Manager;
 
 public interface ManagerDao {
 	public void add(Manager m);
-	public void delete(Manager m);
+	public void delete(String id);
 	public void update(Manager m);
-	public Manager get(String username);
-	public List<Manager> get();
+	public Manager getById(String id);
+	public List<Manager> getAll();
 }
