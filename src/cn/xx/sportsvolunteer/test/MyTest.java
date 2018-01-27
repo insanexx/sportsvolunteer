@@ -17,7 +17,7 @@ public class MyTest {
 	
 	@Test
 	public void testmd5() {
-		System.out.println(MD5Util.getMD5("wodemima"));	
+		System.out.println(MD5Util.getMD5("admin"));	
 	}
 	
 	@Test

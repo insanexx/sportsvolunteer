@@ -16,6 +16,10 @@ public class DBUtil {
 			System.exit(-1);
 		}
 	}
+	/**
+	 * 连接数据库
+	 * @return
+	 */
 	public static Connection getConnection() {
 		try {
 			return DriverManager.getConnection(jdbcurl, username, password);

@@ -198,4 +198,51 @@ public class ManagerDaoImpl implements ManagerDao {
 		}
 		return list;
 	}
+
+	@Override
+	public Manager getByUsernameAndPassword(String username, String password) {
+		Manager manager = null;
+		String sql = "select * from manager where username=? and password=?";
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		conn = DBUtil.getConnection();
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, username);
+			pst.setString(2, password);
+			rs = pst.executeQuery();
+			if(rs.next()) {
+				manager = new Manager();
+				manager.setId(rs.getString("id"));
+				manager.setUsername(rs.getString("username"));
+				manager.setPassword(rs.getString("password"));
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(pst!=null) {
+				try {
+					pst.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(conn!=null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return manager;
+	}
 }

@@ -10,4 +10,5 @@ public interface ManagerDao {
 	public void update(Manager m);
 	public Manager getById(String id);
 	public List<Manager> getAll();
+	public Manager getByUsernameAndPassword(String username, String password);
 }
