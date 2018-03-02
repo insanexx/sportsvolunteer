@@ -6,6 +6,24 @@
 <title>报名表</title>
 </head>
 <body>
-	
+	<h1 align="center">报名表</h1>
+	<table border="solid 1px black" cellspacing="0" cellpadding="0">
+		<thead>
+			<tr>
+				<td>姓名：</td>
+				<td><input type="text"></td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>姓名：</td>
+				<td><input type="text"></td>
+			</tr>
+			<tr>
+				<td>aaa</td>
+				<td>eee</td>
+			</tr>
+		</tbody>
+	</table>
 </body>
 </html>

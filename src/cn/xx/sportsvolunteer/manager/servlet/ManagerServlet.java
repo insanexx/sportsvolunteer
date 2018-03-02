@@ -33,9 +33,18 @@ public class ManagerServlet extends HttpServlet {
 		case "login":
 			login(request,response);
 			break;
+		case "logout":
+			logout(request,response);
+			break;
 		default:
 			break;
 		}
+	}
+
+	private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		request.getSession().removeAttribute("manager");
+		response.sendRedirect(request.getContextPath()+"/jsp/manager/logint.jsp");
+		return;
 	}
 
 	private void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
