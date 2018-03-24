@@ -6,14 +6,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>manager login</title>
-    <link href="/SportsVolunteer/bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet">
-    <link href="/SportsVolunteer/css/signin.css" rel="stylesheet">
-    <script src="/SportsVolunteer/jquery-3.1.0/jquery-3.1.0.min.js"></script>
+    <link href="${pageContext.request.contextPath }/bootstrap-4.0.0-dist/css/bootstrap.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath }/css/signin.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath }/jquery-3.1.0/jquery-3.1.0.min.js"></script>
   </head>
   <body class="text-center">
   	<label id="msg" style="display:none">${requestScope.message }</label>
     <form class="form-signin" action="${pageContext.request.contextPath }/manager/ManagerServlet?method=login" method="POST">
-      <img class="mb-4" src="/SportsVolunteer/img/2.png" alt="" width="72" height="72">
+      <img class="mb-4" src="${pageContext.request.contextPath }/img/2.png" alt="" width="72" height="72">
  	  <h1 class="jumbotron-heading">志愿者管理系统</h1>
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
       <label for="inputEmail" class="sr-only">用户名</label>

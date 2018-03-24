@@ -177,7 +177,7 @@ public class GameDaoImpl implements GameDao {
 			pageIndex = 1;
 		}
 		List<Game> list = new ArrayList<Game>();
-		String sql = "select * from game limit ?,?";//limit a,b==>a从0开始，取b个。
+		String sql = "select * from game order by begintime asc limit ?,? ";//limit a,b==>a从0开始，取b个。
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;

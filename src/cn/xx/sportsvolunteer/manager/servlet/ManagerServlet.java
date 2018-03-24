@@ -43,7 +43,7 @@ public class ManagerServlet extends HttpServlet {
 
 	private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		request.getSession().removeAttribute("manager");
-		response.sendRedirect(request.getContextPath()+"/jsp/manager/logint.jsp");
+		response.sendRedirect(request.getContextPath()+"/jsp/manager/login.jsp");
 		return;
 	}
 
@@ -69,7 +69,7 @@ public class ManagerServlet extends HttpServlet {
 			return;
 		}
 		request.getSession().setAttribute("manager", manager);
-		response.sendRedirect(request.getContextPath()+"/jsp/manager/index.jsp");
+		response.sendRedirect(request.getContextPath()+"/GameServlet?method=index");
 		
 	}
 
