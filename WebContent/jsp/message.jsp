@@ -9,7 +9,6 @@
 <body>
 <script type="text/javascript">
 alert("${message }");
-window.close();
 </script>
 </body>
 </html>

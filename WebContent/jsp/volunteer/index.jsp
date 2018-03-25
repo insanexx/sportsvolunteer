@@ -85,12 +85,12 @@
 		  </div>
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="#">志愿者管理系统(${sessionScope.manager.username })</a>
+      <a class="navbar-brand" href="#">志愿者信息系统(${sessionScope.volunteer.username })</a>
       
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
         </ul>
-        <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath }/manager/ManagerServlet?method=logout" method="POST">
+        <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath }/volunteer/VolunteerServlet?method=logout" method="POST">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">注销</button>
         </form>
       </div>
@@ -107,14 +107,13 @@
 	        </div>
       	  </div>
 	      <div class="my-3 p-3 bg-white rounded box-shadow">
-	        <a class="btn btn-outline-success my-2 my-sm-0" href="#" data-toggle="modal" data-target="#myModal">添加 <span class="sr-only">(current)</span></a>
 	        <c:forEach items="${gameList }" var="game">
 		       <div class="media text-muted pt-3">
 		          <img src="${pageContext.request.contextPath }/img/3.png" alt="" class="mr-2 rounded">
 		          <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
 		            <div class="d-flex justify-content-between align-items-center w-100">
 		              <strong class="text-gray-dark">标题：${game.name }</strong>
-		              <a onclick="return sure()" href="${pageContext.request.contextPath }/manager/GameServlet?method=deletegame&id=${game.id}">删除</a>
+		              		              <a onclick="return sure()" href="${pageContext.request.contextPath }/volunteeer/VolunteerServlet?method=entergame&id=${game.id}">报名</a>
 		            </div>
 		            	<span class="d-block">赛事描述：${game.description }</span>
 		            	<span class="d-block">工作描述：${game.jobdescription }</span>

@@ -13,11 +13,9 @@ import cn.xx.sportsvolunteer.dao.ManagerDao;
 import cn.xx.sportsvolunteer.dao.impl.ManagerDaoImpl;
 import cn.xx.sportsvolunteer.utils.MD5Util;
 
-/**
- * Servlet implementation class ManagerServlet
- */
 @WebServlet("/manager/ManagerServlet")
 public class ManagerServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 	private ManagerDao mdao = new ManagerDaoImpl();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -29,10 +27,18 @@ public class ManagerServlet extends HttpServlet {
 		if (method == null || method.trim().equals("")) {
 			return;
 		}
-		switch (method) {
-		case "login":
+		if("login".equals(method)) {
 			login(request,response);
-			break;
+			return;
+		}
+		//检查管理员登陆状态
+		Manager manager = (Manager) request.getSession().getAttribute("manager");
+		if(manager==null) {
+			request.setAttribute("message", "您未登录");
+			request.getRequestDispatcher("/jsp/message.jsp").forward(request, response);
+			return;
+		}
+		switch (method) {
 		case "logout":
 			logout(request,response);
 			break;
@@ -60,8 +66,6 @@ public class ManagerServlet extends HttpServlet {
 			request.getRequestDispatcher("/jsp/manager/login.jsp").forward(request, response);
 			return;
 		}
-		System.out.println(username);
-		System.out.println(password);
 		Manager manager = mdao.getByUsernameAndPassword(username,MD5Util.getMD5(password));
 		if(manager==null) {
 			request.setAttribute("message", "用户名或者密码输入错误");
@@ -69,7 +73,7 @@ public class ManagerServlet extends HttpServlet {
 			return;
 		}
 		request.getSession().setAttribute("manager", manager);
-		response.sendRedirect(request.getContextPath()+"/GameServlet?method=index");
+		response.sendRedirect(request.getContextPath()+"/manager/GameServlet?method=index");
 		
 	}
 
