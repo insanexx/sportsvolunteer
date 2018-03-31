@@ -1,4 +1,4 @@
-package cn.xx.sportsvolunteer.manager.servlet;
+package cn.xx.sportsvolunteer.enterprise.servlet;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.xx.sportsvolunteer.beans.Enterprise;
 import cn.xx.sportsvolunteer.beans.Game;
-import cn.xx.sportsvolunteer.beans.Manager;
 import cn.xx.sportsvolunteer.dao.GameDao;
 import cn.xx.sportsvolunteer.dao.impl.GameDaoImpl;
 import cn.xx.sportsvolunteer.utils.IdGenerator;
 
-@WebServlet("/manager/GameServlet")
+@WebServlet("/enterprise/GameServlet")
 public class GameServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private GameDao gameDao = new GameDaoImpl();
@@ -29,8 +29,8 @@ public class GameServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		//检查管理员登陆状态
-		Manager manager = (Manager) request.getSession().getAttribute("manager");
-		if(manager==null) {
+		Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+		if(enterprise==null) {
 			request.setAttribute("message", "您未登录");
 			request.getRequestDispatcher("/jsp/message.jsp").forward(request, response);
 			return;
@@ -55,10 +55,11 @@ public class GameServlet extends HttpServlet {
 	}
 	
 	private void index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Game> gameList = gameDao.getList(0, 1000);
+		Enterprise en = (Enterprise) request.getSession().getAttribute("enterprise");
+		List<Game> gameList = gameDao.getListByEnterprise(0, 1000,en.getId());
 		request.getSession().setAttribute("gameList", gameList);
-		request.getRequestDispatcher("/jsp/manager/index.jsp").forward(request, response);
-//		response.sendRedirect(request.getServletContext().getContextPath()+"/jsp/manager/index.jsp");
+		request.getRequestDispatcher("/jsp/enterprise/index.jsp").forward(request, response);
+//		response.sendRedirect(request.getServletContext().getContextPath()+"/jsp/enterprise/index.jsp");
 		return;
 	}
 
@@ -92,6 +93,7 @@ public class GameServlet extends HttpServlet {
 	}
 
 	private Game createGame(HttpServletRequest request) {
+		Enterprise en = (Enterprise) request.getSession().getAttribute("enterprise");
 		String name = request.getParameter("name");
 		String description = request.getParameter("description");
 		String jobdescription = request.getParameter("jobdescription");
@@ -99,6 +101,7 @@ public class GameServlet extends HttpServlet {
 		String endtime_str = request.getParameter("endtime");
 		String address = request.getParameter("address");
 		String salary_str = request.getParameter("salary");
+		String personcount_str = request.getParameter("personcount");
 		//
 		String id = IdGenerator.createId();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/mm/dd");
@@ -117,7 +120,9 @@ public class GameServlet extends HttpServlet {
 			}
 		}
 		double salary = Double.parseDouble(salary_str);
-		Game game = new Game(id, name, description, jobdescription, begintime, endtime, address, salary);
+		int enterpriseid = en.getId();
+		int personcount = Integer.parseInt(personcount_str);
+		Game game = new Game(id, name, description, jobdescription, begintime, endtime, address, salary, enterpriseid, personcount);
 		return game;
 	}
 

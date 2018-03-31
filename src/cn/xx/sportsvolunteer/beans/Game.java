@@ -11,10 +11,31 @@ public class Game {
 	private Date endtime;
 	private String address;
 	private double salary;
+	private int enterpriseid;
+	public int getEnterpriseid() {
+		return enterpriseid;
+	}
+	public void setEnterpriseid(int enterpriseid) {
+		this.enterpriseid = enterpriseid;
+	}
+	private int personcount;
+	private int restcount;
 	
+	public int getRestcount() {
+		return restcount;
+	}
+	public void setRestcount(int restcount) {
+		this.restcount = restcount;
+	}
+	public int getPersoncount() {
+		return personcount;
+	}
+	public void setPersoncount(int personcount) {
+		this.personcount = personcount;
+	}
 	public Game() {}
 	public Game(String id, String name, String description, String jobdescription, Date begintime, Date endtime,
-			String address, double salary) {
+			String address, double salary,int enterpriseid,int personcount) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -23,6 +44,8 @@ public class Game {
 		this.endtime = endtime;
 		this.address = address;
 		this.salary = salary;
+		this.enterpriseid = enterpriseid;
+		this.personcount = personcount;
 	}
 	public String getId() {
 		return id;

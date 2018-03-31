@@ -7,23 +7,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.xx.sportsvolunteer.beans.Manager;
-import cn.xx.sportsvolunteer.dao.ManagerDao;
+import cn.xx.sportsvolunteer.beans.Enterprise;
+import cn.xx.sportsvolunteer.dao.EnterpriseDao;
 import cn.xx.sportsvolunteer.utils.DBUtil;
 
-public class ManagerDaoImpl implements ManagerDao {
+public class EnterpriseDaoImpl implements EnterpriseDao {
 
 	@Override
-	public void add(Manager m) {
-		String sql = "insert into manager(id,username,password) value(?,?,?)";
+	public void add(Enterprise enterprise) {
+		String sql = "insert into enterprise(id,username,password,enterpriseName,address,phonenumber,business) value(?,?,?,?,?,?,?)";
 		Connection conn = null;
 		PreparedStatement pst = null;
 		conn = DBUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
-			pst.setString(1, m.getId());
-			pst.setString(2, m.getUsername());
-			pst.setString(3, m.getPassword());
+			pst.setInt(1, enterprise.getId());
+			pst.setString(2, enterprise.getUsername());
+			pst.setString(3, enterprise.getPassword());
+			pst.setString(4, enterprise.getEnterpriseName());
+			pst.setString(5, enterprise.getAddress());
+			pst.setString(6, enterprise.getPhonenumber());
+			pst.setString(7, enterprise.getBusiness());
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -46,14 +50,14 @@ public class ManagerDaoImpl implements ManagerDao {
 	}
 
 	@Override
-	public void delete(String id) {
-		String sql = "delete from manager where id=?";
+	public void delete(int id) {
+		String sql = "delete from enterprise where id=?";
 		Connection conn = null;
 		PreparedStatement pst = null;
 		conn = DBUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
-			pst.setString(1, id);
+			pst.setInt(1, id);
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -76,16 +80,20 @@ public class ManagerDaoImpl implements ManagerDao {
 	}
 
 	@Override
-	public void update(Manager manager) {
-		String sql = "update manager set username=?,password=? where id=?";
+	public void update(Enterprise enterprise) {
+		String sql = "update enterprise set username=?,password=?,enterpriseName=?,address=?,phonenumber=?,business=? where id=?";
 		Connection conn = null;
 		PreparedStatement pst = null;
 		conn = DBUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
-			pst.setString(1, manager.getUsername());
-			pst.setString(2, manager.getPassword());
-			pst.setString(3, manager.getId());
+			pst.setString(1, enterprise.getUsername());
+			pst.setString(2, enterprise.getPassword());
+			pst.setString(3, enterprise.getEnterpriseName());
+			pst.setString(4, enterprise.getAddress());
+			pst.setString(5, enterprise.getPhonenumber());
+			pst.setString(6, enterprise.getBusiness());
+			pst.setInt(7, enterprise.getId());
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -108,22 +116,26 @@ public class ManagerDaoImpl implements ManagerDao {
 	}
 
 	@Override
-	public Manager getById(String id) {
-		Manager manager = null;
-		String sql = "select * from manager where id=?";
+	public Enterprise getById(int id) {
+		Enterprise enterprise = null;
+		String sql = "select * from enterprise where id=?";
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		conn = DBUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
-			pst.setString(1, id);
+			pst.setInt(1, id);
 			rs = pst.executeQuery();
 			if(rs.next()) {
-				manager = new Manager();
-				manager.setId(id);
-				manager.setUsername(rs.getString("username"));
-				manager.setPassword(rs.getString("password"));
+				enterprise = new Enterprise();
+				enterprise.setId(id);
+				enterprise.setUsername(rs.getString("username"));
+				enterprise.setPassword(rs.getString("password"));
+				enterprise.setPhonenumber(rs.getString("phonenumber"));
+				enterprise.setEnterpriseName(rs.getString("enterpriseName"));
+				enterprise.setAddress(rs.getString("address"));
+				enterprise.setBusiness(rs.getString("business"));
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -150,13 +162,13 @@ public class ManagerDaoImpl implements ManagerDao {
 				}
 			}
 		}
-		return manager;
+		return enterprise;
 	}
 
 	@Override
-	public List<Manager> getAll() {
-		List<Manager> list = new ArrayList<Manager>();
-		String sql = "select * from manager";
+	public List<Enterprise> getAll() {
+		List<Enterprise> list = new ArrayList<Enterprise>();
+		String sql = "select * from enterprise";
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
@@ -165,11 +177,15 @@ public class ManagerDaoImpl implements ManagerDao {
 			pst = conn.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while(rs.next()) {
-				Manager manager = new Manager();
-				manager.setId(rs.getString("id"));
-				manager.setUsername(rs.getString("username"));
-				manager.setPassword(rs.getString("password"));
-				list.add(manager);
+				Enterprise enterprise = new Enterprise();
+				enterprise.setId(rs.getInt("id"));
+				enterprise.setUsername(rs.getString("username"));
+				enterprise.setPassword(rs.getString("password"));
+				enterprise.setPhonenumber(rs.getString("phonenumber"));
+				enterprise.setEnterpriseName(rs.getString("enterpriseName"));
+				enterprise.setAddress(rs.getString("address"));
+				enterprise.setBusiness(rs.getString("business"));
+				list.add(enterprise);
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -200,9 +216,9 @@ public class ManagerDaoImpl implements ManagerDao {
 	}
 
 	@Override
-	public Manager getByUsernameAndPassword(String username, String password) {
-		Manager manager = null;
-		String sql = "select * from manager where username=? and password=?";
+	public Enterprise getByUsernameAndPassword(String username, String password) {
+		Enterprise enterprise = null;
+		String sql = "select * from enterprise where username=? and password=?";
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
@@ -213,10 +229,14 @@ public class ManagerDaoImpl implements ManagerDao {
 			pst.setString(2, password);
 			rs = pst.executeQuery();
 			if(rs.next()) {
-				manager = new Manager();
-				manager.setId(rs.getString("id"));
-				manager.setUsername(rs.getString("username"));
-				manager.setPassword(rs.getString("password"));
+				enterprise = new Enterprise();
+				enterprise.setId(rs.getInt("id"));
+				enterprise.setUsername(rs.getString("username"));
+				enterprise.setPassword(rs.getString("password"));
+				enterprise.setPhonenumber(rs.getString("phonenumber"));
+				enterprise.setEnterpriseName(rs.getString("enterpriseName"));
+				enterprise.setAddress(rs.getString("address"));
+				enterprise.setBusiness(rs.getString("business"));
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -243,6 +263,6 @@ public class ManagerDaoImpl implements ManagerDao {
 				}
 			}
 		}
-		return manager;
+		return enterprise;
 	}
 }

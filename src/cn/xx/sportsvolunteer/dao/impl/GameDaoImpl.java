@@ -17,7 +17,7 @@ public class GameDaoImpl implements GameDao {
 
 	@Override
 	public void add(Game g) {
-		String sql = "insert into game(id,name,description,jobdescription,begintime,endtime,address,salary) value(?,?,?,?,?,?,?,?)";
+		String sql = "insert into game(id,name,description,jobdescription,begintime,endtime,address,salary,enterpriseid,personcount) value(?,?,?,?,?,?,?,?,?,?)";
 		Connection conn = null;
 		PreparedStatement pst = null;
 		conn = DBUtil.getConnection();
@@ -31,6 +31,8 @@ public class GameDaoImpl implements GameDao {
 			pst.setTimestamp(6, new Timestamp(g.getEndtime().getTime()));
 			pst.setString(7, g.getAddress());
 			pst.setDouble(8, g.getSalary());
+			pst.setInt(9, g.getEnterpriseid());
+			pst.setInt(10, g.getPersoncount());
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -85,7 +87,7 @@ public class GameDaoImpl implements GameDao {
 	@Override
 	public void update(Game g) {
 		String sql = "update game set name=?,description=?,jobdescription=?,begintime=?,"
-				+ "endtime=?,address=?,salary=? where id=?";
+				+ "endtime=?,address=?,salary=?,enterpriseid=?,personcount=? where id=?";
 		Connection conn = null;
 		PreparedStatement pst = null;
 		conn = DBUtil.getConnection();
@@ -98,7 +100,9 @@ public class GameDaoImpl implements GameDao {
 			pst.setTimestamp(5, new Timestamp(g.getEndtime().getTime()));
 			pst.setString(6, g.getAddress());
 			pst.setDouble(7, g.getSalary());
-			pst.setString(8, g.getId());
+			pst.setInt(8, g.getEnterpriseid());
+			pst.setInt(9, g.getPersoncount());
+			pst.setString(10, g.getId());
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -142,6 +146,8 @@ public class GameDaoImpl implements GameDao {
 				game.setJobdescription(rs.getString("jobdescription"));
 				game.setName(rs.getString("name"));
 				game.setSalary(rs.getDouble("salary"));
+				game.setEnterpriseid(rs.getInt("enterpriseid"));
+				game.setPersoncount(rs.getInt("personcount"));
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -197,6 +203,68 @@ public class GameDaoImpl implements GameDao {
 				game.setJobdescription(rs.getString("jobdescription"));
 				game.setName(rs.getString("name"));
 				game.setSalary(rs.getDouble("salary"));
+				game.setEnterpriseid(rs.getInt("enterpriseid"));
+				game.setPersoncount(rs.getInt("personcount"));
+				list.add(game);
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(pst!=null) {
+				try {
+					pst.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(conn!=null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<Game> getListByEnterprise(int pageIndex, int pageSize, int enterpriseid) {
+		if(pageIndex<=0) {
+			pageIndex = 1;
+		}
+		List<Game> list = new ArrayList<Game>();
+		String sql = "select g.*,(select count(*) from game_volunteer gv where gv.gameid=g.id ) as restcount from game g where g.enterpriseid=? order by g.begintime asc limit ?,? ";//limit a,b==>a从0开始，取b个。
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		conn = DBUtil.getConnection();
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, enterpriseid);
+			pst.setInt(2, (pageIndex-1)*pageSize);
+			pst.setInt(3, pageSize);
+			rs = pst.executeQuery();
+			while(rs.next()) {
+				Game game = new Game();
+				game.setId(rs.getString("id"));
+				game.setAddress(rs.getString("address"));
+				game.setBegintime(new Date(rs.getTimestamp("begintime").getTime()));
+				game.setDescription(rs.getString("description"));
+				game.setEndtime(new Date(rs.getTimestamp("endtime").getTime()));
+				game.setJobdescription(rs.getString("jobdescription"));
+				game.setName(rs.getString("name"));
+				game.setSalary(rs.getDouble("salary"));
+				game.setEnterpriseid(rs.getInt("enterpriseid"));
+				game.setPersoncount(rs.getInt("personcount"));
+				game.setRestcount(game.getPersoncount()-rs.getInt("restcount"));
 				list.add(game);
 			}
 		} catch (SQLException e) {
