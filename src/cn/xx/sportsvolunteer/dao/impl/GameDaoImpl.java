@@ -300,4 +300,63 @@ public class GameDaoImpl implements GameDao {
 		return list;
 	}
 
+	@Override
+	public List<Game> getList(int pageIndex, int pageSize) {
+		if(pageIndex<=0) {
+			pageIndex = 1;
+		}
+		List<Game> list = new ArrayList<Game>();
+		String sql = "select g.*,(select count(*) from game_volunteer gv where gv.gameid=g.id ) as enteredcount from game g order by g.begintime asc limit ?,? ";//limit a,b==>a从0开始，取b个。
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		conn = DBUtil.getConnection();
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, (pageIndex-1)*pageSize);
+			pst.setInt(2, pageSize);
+			rs = pst.executeQuery();
+			while(rs.next()) {
+				Game game = new Game();
+				game.setId(rs.getString("id"));
+				game.setAddress(rs.getString("address"));
+				game.setBegintime(new Date(rs.getTimestamp("begintime").getTime()));
+				game.setDescription(rs.getString("description"));
+				game.setEndtime(new Date(rs.getTimestamp("endtime").getTime()));
+				game.setJobdescription(rs.getString("jobdescription"));
+				game.setName(rs.getString("name"));
+				game.setSalary(rs.getDouble("salary"));
+				game.setEnterpriseid(rs.getInt("enterpriseid"));
+				game.setPersoncount(rs.getInt("personcount"));
+				game.setRestcount(game.getPersoncount()-rs.getInt("enteredcount"));
+				list.add(game);
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(pst!=null) {
+				try {
+					pst.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(conn!=null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+
 }

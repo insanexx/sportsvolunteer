@@ -43,7 +43,7 @@ public class EnterpriseServlet extends HttpServlet {
 			register(request,response);
 			return;
 		}
-		//检查管理员登陆状态
+		//检查企业登陆状态
 		Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
 		if(enterprise==null) {
 			request.setAttribute("message", "您未登录");

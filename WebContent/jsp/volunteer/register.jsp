@@ -65,11 +65,19 @@
 		</div>
 
 		<div class="form-group">
+			<label for="age" class="col-sm-2 control-label">年龄：</label>
+			<div class="col-sm-4">
+				<input type="number" class="form-control" id="age" name="age" value="${v.age }" maxlength=3 placeholder="年龄" autofocus>
+			</div>
+		</div>
+
+		<div class="form-group">
 			<label for="idcardnumber" class="col-sm-2 control-label">身份证号：</label>
 			<div class="col-sm-4">
 				<input type="text" class="form-control" id="idcardnumber" name="idcardnumber" value="${v.idcardnumber }" maxlength=20 placeholder="身份证号" required autofocus>
 			</div>
 		</div>
+		
 
 		<div class="form-group">
 			<label for="specialskill" class="col-sm-2 control-label">特长：</label>
