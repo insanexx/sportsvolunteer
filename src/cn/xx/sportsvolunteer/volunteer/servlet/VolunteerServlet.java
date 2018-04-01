@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import cn.xx.sportsvolunteer.beans.Game;
 import cn.xx.sportsvolunteer.beans.Volunteer;
 import cn.xx.sportsvolunteer.dao.GameDao;
@@ -70,7 +72,8 @@ public class VolunteerServlet extends HttpServlet {
 			}
 			volunteerDao.entergame(game, v);
 			request.setAttribute("message", "报名成功");
-			request.getRequestDispatcher("/jsp/volunteer/index.jsp").forward(request, response);
+			response.sendRedirect(request.getContextPath()+"/volunteer/IndexServlet");
+//			request.getRequestDispatcher("/jsp/volunteer/index.jsp").forward(request, response);
 			return;
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -116,7 +119,15 @@ public class VolunteerServlet extends HttpServlet {
 		errorMessage = validate(v);
 		if(errorMessage==null) {
 			v.setPassword(MD5Util.getMD5(v.getPassword()));
-			volunteerDao.add(v);
+			try {
+				volunteerDao.add(v);
+			}catch(MySQLIntegrityConstraintViolationException e) {
+				errorMessage = "用户名已被注册";
+				request.setAttribute("message", "注册失败:"+errorMessage);
+				request.setAttribute("v", v);
+				request.getRequestDispatcher("/jsp/volunteer/register.jsp").forward(request, response);
+				return;
+			}
 			//跳转登陆页面
 			request.setAttribute("message", "注册成功");
 			request.setAttribute("v", v);

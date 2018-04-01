@@ -21,6 +21,10 @@
 	    }
     </style>
     <script type="text/javascript">
+    	var msg = "${message}";
+    	if(msg){
+    		alert(msg);
+    	}
     	function sure(){
     		return confirm("确定删除吗？");
     	}
@@ -113,11 +117,18 @@
 		          <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
 		            <div class="d-flex justify-content-between align-items-center w-100">
 		              <strong class="text-gray-dark">标题：${game.name }</strong>
-		              		              <a onclick="return sure()" href="${pageContext.request.contextPath }/volunteeer/VolunteerServlet?method=entergame&id=${game.id}">报名</a>
+		              <c:if test="${!game.entered }">
+			          	<a href="${pageContext.request.contextPath }/volunteer/VolunteerServlet?method=entergame&id=${game.id}">报名</a>
+		              </c:if>
+		              <c:if test="${game.entered }">
+		             	<a href="#">已报名</a>
+		              </c:if>
 		            </div>
+		            	<span class="d-block">公司：${game.enterprisename }</span>
 		            	<span class="d-block">赛事描述：${game.description }</span>
 		            	<span class="d-block">工作描述：${game.jobdescription }</span>
 		            	<span class="d-block">工作地点：${game.address }</span>
+		            	<span class="d-block">招募人数：${game.personcount }(剩余名额:${game.restcount })</span>
 		            <span>
 		            	<fmt:formatDate value="${game.begintime }" pattern="yyyy-MM-dd"/>
 		            	--&gt;<fmt:formatDate value="${game.endtime }" pattern="yyyy-MM-dd"/>

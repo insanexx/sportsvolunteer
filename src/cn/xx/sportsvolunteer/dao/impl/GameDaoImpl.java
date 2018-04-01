@@ -126,7 +126,7 @@ public class GameDaoImpl implements GameDao {
 
 	@Override
 	public Game getById(String id) {
-		String sql = "select * from game where id=?";
+		String sql = "select g.*,(select count(*) from game_volunteer gv where gv.gameid=g.id ) as enteredcount from game g where id=?";
 		Game game = null;
 		Connection conn = null;
 		PreparedStatement pst = null;
@@ -148,6 +148,7 @@ public class GameDaoImpl implements GameDao {
 				game.setSalary(rs.getDouble("salary"));
 				game.setEnterpriseid(rs.getInt("enterpriseid"));
 				game.setPersoncount(rs.getInt("personcount"));
+				game.setRestcount(game.getPersoncount()-rs.getInt("enteredcount"));
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -178,20 +179,21 @@ public class GameDaoImpl implements GameDao {
 	}
 
 	@Override
-	public List<Game> getList(int pageIndex, int pageSize) {
+	public List<Game> getList(int pageIndex, int pageSize,String volunteerid) {
 		if(pageIndex<=0) {
 			pageIndex = 1;
 		}
 		List<Game> list = new ArrayList<Game>();
-		String sql = "select * from game order by begintime asc limit ?,? ";//limit a,b==>a从0开始，取b个。
+		String sql = "select g.*,e.enterpriseName as enterprisename,(select count(*) from game_volunteer gv where gv.gameid=g.id) as enteredcount, (select count(*) from game_volunteer gv where gv.volunteerid=? and gv.gameid=g.id)>0 as entered from game g, enterprise e where g.enterpriseid=e.id order by g.begintime asc limit ?,? ";//limit a,b==>a从0开始，取b个。
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		conn = DBUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
-			pst.setInt(1, (pageIndex-1)*pageSize);
-			pst.setInt(2, pageSize);
+			pst.setString(1, volunteerid);
+			pst.setInt(2, (pageIndex-1)*pageSize);
+			pst.setInt(3, pageSize);
 			rs = pst.executeQuery();
 			while(rs.next()) {
 				Game game = new Game();
@@ -205,6 +207,9 @@ public class GameDaoImpl implements GameDao {
 				game.setSalary(rs.getDouble("salary"));
 				game.setEnterpriseid(rs.getInt("enterpriseid"));
 				game.setPersoncount(rs.getInt("personcount"));
+				game.setEnterprisename(rs.getString("enterprisename"));
+				game.setRestcount(game.getPersoncount()-rs.getInt("enteredcount"));
+				game.setEntered(rs.getBoolean("entered"));
 				list.add(game);
 			}
 		} catch (SQLException e) {
@@ -241,7 +246,7 @@ public class GameDaoImpl implements GameDao {
 			pageIndex = 1;
 		}
 		List<Game> list = new ArrayList<Game>();
-		String sql = "select g.*,(select count(*) from game_volunteer gv where gv.gameid=g.id ) as restcount from game g where g.enterpriseid=? order by g.begintime asc limit ?,? ";//limit a,b==>a从0开始，取b个。
+		String sql = "select g.*,(select count(*) from game_volunteer gv where gv.gameid=g.id ) as enteredcount from game g where g.enterpriseid=? order by g.begintime asc limit ?,? ";//limit a,b==>a从0开始，取b个。
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
@@ -264,7 +269,7 @@ public class GameDaoImpl implements GameDao {
 				game.setSalary(rs.getDouble("salary"));
 				game.setEnterpriseid(rs.getInt("enterpriseid"));
 				game.setPersoncount(rs.getInt("personcount"));
-				game.setRestcount(game.getPersoncount()-rs.getInt("restcount"));
+				game.setRestcount(game.getPersoncount()-rs.getInt("enteredcount"));
 				list.add(game);
 			}
 		} catch (SQLException e) {

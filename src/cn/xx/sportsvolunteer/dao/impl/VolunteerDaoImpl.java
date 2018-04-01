@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import cn.xx.sportsvolunteer.beans.Game;
 import cn.xx.sportsvolunteer.beans.Volunteer;
 import cn.xx.sportsvolunteer.dao.VolunteerDao;
@@ -16,7 +18,7 @@ import cn.xx.sportsvolunteer.utils.DBUtil;
 public class VolunteerDaoImpl implements VolunteerDao {
 
 	@Override
-	public void add(Volunteer v) {
+	public void add(Volunteer v) throws MySQLIntegrityConstraintViolationException{
 		String sql = "insert into volunteer(id,username,password,age,gender,address,idcardnumber,phonenumber,specialskill,registertime) value(?,?,?,?,?,?,?,?,?,?)";
 		Connection conn = null;
 		PreparedStatement pst = null;
@@ -34,9 +36,11 @@ public class VolunteerDaoImpl implements VolunteerDao {
 			pst.setString(9, v.getSpecialskill());
 			pst.setTimestamp(10, new Timestamp(v.getRegistertime().getTime()));
 			pst.executeUpdate();
+		} catch(MySQLIntegrityConstraintViolationException e) {
+			throw e;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
-		} finally{
+		}finally{
 			if(pst!=null) {
 				try {
 					pst.close();
@@ -361,6 +365,60 @@ public class VolunteerDaoImpl implements VolunteerDao {
 				}
 			}
 		}
+	}
+
+	@Override
+	public List<Volunteer> getVolunteersByGame(String gameid) {
+		List<Volunteer> list = new ArrayList<Volunteer>();
+		String sql = "select v.* from volunteer v,game_volunteer gv where v.id=gv.volunteerid and gv.gameid=?";
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		conn = DBUtil.getConnection();
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, gameid);
+			rs = pst.executeQuery();
+			while(rs.next()) {
+				Volunteer v = new Volunteer();
+				v.setId(rs.getString("id"));
+				v.setUsername(rs.getString("username"));
+				v.setPassword(rs.getString("password"));
+				v.setAddress(rs.getString("address"));
+				v.setAge(rs.getInt("age"));
+				v.setGender(rs.getString("gender"));
+				v.setIdcardnumber(rs.getString("idcardnumber"));
+				v.setPhonenumber(rs.getString("phonenumber"));
+				v.setRegistertime(rs.getTimestamp("registertime"));
+				v.setSpecialskill(rs.getString("specialskill"));
+				list.add(v);
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(pst!=null) {
+				try {
+					pst.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(conn!=null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
 	}
 	
 }

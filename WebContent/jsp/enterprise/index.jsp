@@ -89,7 +89,7 @@
 		  </div>
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="#">志愿者管理系统(${sessionScope.enterprise.username }-${sessionScope.enterprise.enterpriseName })</a>
+      <a class="navbar-brand" href="#">志愿者报名系统(${sessionScope.enterprise.username }-${sessionScope.enterprise.enterpriseName })</a>
       
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
@@ -118,16 +118,19 @@
 		          <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
 		            <div class="d-flex justify-content-between align-items-center w-100">
 		              <strong class="text-gray-dark">标题：${game.name }</strong>
-		              <a onclick="return sure()" href="${pageContext.request.contextPath }/enterprise/GameServlet?method=deletegame&id=${game.id}">删除</a>
+		              <a class="btn btn-outline-success my-2 my-sm-0"  onclick="return sure()" href="${pageContext.request.contextPath }/enterprise/GameServlet?method=deletegame&id=${game.id}">删除</a>
 		            </div>
-		            	<span class="d-block">赛事描述：${game.description }</span>
-		            	<span class="d-block">工作描述：${game.jobdescription }</span>
-		            	<span class="d-block">工作地点：${game.address }</span>
-		            	<span class="d-block">招募人数：${game.personcount }(剩余名额:${game.restcount })</span>
+	            	<span class="d-block">赛事描述：${game.description }</span>
+	            	<span class="d-block">工作描述：${game.jobdescription }</span>
+	            	<span class="d-block">工作地点：${game.address }</span>
+	            	<span class="d-block">招募人数：${game.personcount }(剩余名额:${game.restcount })</span>
 		            <span>
 		            	<fmt:formatDate value="${game.begintime }" pattern="yyyy-MM-dd"/>
 		            	--&gt;<fmt:formatDate value="${game.endtime }" pattern="yyyy-MM-dd"/>
 		            </span>
+		            <div>
+		            	 <a target="_blank" href="${pageContext.request.contextPath }/enterprise/EnterpriseServlet?method=listvolunteer&gameid=${game.id}">查看报名列表</a>
+		            </div>
 		          </div>
 		        </div>
 	        </c:forEach>

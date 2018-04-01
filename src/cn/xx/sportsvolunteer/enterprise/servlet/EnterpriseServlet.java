@@ -1,6 +1,7 @@
 package cn.xx.sportsvolunteer.enterprise.servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,14 +10,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.xx.sportsvolunteer.beans.Enterprise;
+import cn.xx.sportsvolunteer.beans.Game;
+import cn.xx.sportsvolunteer.beans.Volunteer;
 import cn.xx.sportsvolunteer.dao.EnterpriseDao;
+import cn.xx.sportsvolunteer.dao.GameDao;
+import cn.xx.sportsvolunteer.dao.VolunteerDao;
 import cn.xx.sportsvolunteer.dao.impl.EnterpriseDaoImpl;
+import cn.xx.sportsvolunteer.dao.impl.GameDaoImpl;
+import cn.xx.sportsvolunteer.dao.impl.VolunteerDaoImpl;
 import cn.xx.sportsvolunteer.utils.MD5Util;
 
 @WebServlet("/enterprise/EnterpriseServlet")
 public class EnterpriseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private EnterpriseDao enDao = new EnterpriseDaoImpl();
+	private VolunteerDao vDao = new VolunteerDaoImpl();
+	private GameDao gDao = new GameDaoImpl();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -35,7 +44,7 @@ public class EnterpriseServlet extends HttpServlet {
 			return;
 		}
 		//检查管理员登陆状态
-		Enterprise enterprise = (Enterprise) request.getSession().getAttribute("Enterprise");
+		Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
 		if(enterprise==null) {
 			request.setAttribute("message", "您未登录");
 			request.getRequestDispatcher("/jsp/message.jsp").forward(request, response);
@@ -45,9 +54,22 @@ public class EnterpriseServlet extends HttpServlet {
 		case "logout":
 			logout(request,response);
 			break;
+		case "listvolunteer":
+			listvolunteer(request,response);
+			break;
 		default:
 			break;
 		}
+	}
+
+	private void listvolunteer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String gameid = request.getParameter("gameid");
+		List<Volunteer> list = vDao.getVolunteersByGame(gameid);
+		request.setAttribute("list", list);
+		Game game = gDao.getById(gameid);
+		request.setAttribute("game", game);
+		request.getRequestDispatcher("/jsp/enterprise/listgamevolunteer.jsp").forward(request, response);
+		return;
 	}
 
 	private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -131,7 +153,8 @@ public class EnterpriseServlet extends HttpServlet {
 			return;
 		}
 		request.getSession().setAttribute("enterprise", enterprise);
-		response.sendRedirect(request.getContextPath()+"/enterprise/GameServlet?method=index");
+		response.sendRedirect(request.getContextPath()+"/enterprise/IndexServlet");
+//		response.sendRedirect(request.getContextPath()+"/enterprise/GameServlet?method=index");
 		
 	}
 

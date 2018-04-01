@@ -12,6 +12,20 @@ public class Game {
 	private String address;
 	private double salary;
 	private int enterpriseid;
+	private String enterprisename;
+	private boolean entered;
+	public boolean isEntered() {
+		return entered;
+	}
+	public void setEntered(boolean entered) {
+		this.entered = entered;
+	}
+	public String getEnterprisename() {
+		return enterprisename;
+	}
+	public void setEnterprisename(String enterprisename) {
+		this.enterprisename = enterprisename;
+	}
 	public int getEnterpriseid() {
 		return enterpriseid;
 	}

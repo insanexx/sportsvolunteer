@@ -58,8 +58,8 @@ public class GameServlet extends HttpServlet {
 		Enterprise en = (Enterprise) request.getSession().getAttribute("enterprise");
 		List<Game> gameList = gameDao.getListByEnterprise(0, 1000,en.getId());
 		request.getSession().setAttribute("gameList", gameList);
-		request.getRequestDispatcher("/jsp/enterprise/index.jsp").forward(request, response);
-//		response.sendRedirect(request.getServletContext().getContextPath()+"/jsp/enterprise/index.jsp");
+//		request.getRequestDispatcher("/jsp/enterprise/index.jsp").forward(request, response);
+		response.sendRedirect(request.getServletContext().getContextPath()+"/jsp/enterprise/index.jsp");
 		return;
 	}
 
