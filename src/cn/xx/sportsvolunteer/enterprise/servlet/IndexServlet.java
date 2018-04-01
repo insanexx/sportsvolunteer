@@ -21,6 +21,11 @@ public class IndexServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Enterprise en = (Enterprise) request.getSession().getAttribute("enterprise");
+		if(en==null) {
+			request.setAttribute("message", "您未登录");
+			request.getRequestDispatcher("/jsp/message.jsp").forward(request, response);
+			return;
+		}
 		List<Game> gameList = gameDao.getListByEnterprise(0, 1000,en.getId());
 		request.getSession().setAttribute("gameList", gameList);
 		request.getRequestDispatcher("/jsp/enterprise/index.jsp").forward(request, response);

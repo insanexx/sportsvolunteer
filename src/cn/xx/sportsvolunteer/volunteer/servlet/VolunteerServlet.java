@@ -65,11 +65,17 @@ public class VolunteerServlet extends HttpServlet {
 			Volunteer v = (Volunteer) request.getSession().getAttribute("volunteer");
 			String id = request.getParameter("id");
 			Game game = gameDao.getById(id);
+			if(game.getRestcount()<=0) {
+				request.setAttribute("message", "人数已满，报名失败");
+				request.getRequestDispatcher("/jsp/volunteer/index.jsp").forward(request, response);
+				return;
+			}
 			if(volunteerDao.isEnterGame(game,v)) {
 				request.setAttribute("message", "你已经报名过了，请勿重复报名");
 				request.getRequestDispatcher("/jsp/volunteer/index.jsp").forward(request, response);
 				return;
 			}
+			
 			volunteerDao.entergame(game, v);
 			request.setAttribute("message", "报名成功");
 			response.sendRedirect(request.getContextPath()+"/volunteer/IndexServlet");

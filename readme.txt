@@ -1,3 +1,0 @@
-管理员登陆做好了
-game和volunteer和manager的增删改查做好了
-页面全面没做。

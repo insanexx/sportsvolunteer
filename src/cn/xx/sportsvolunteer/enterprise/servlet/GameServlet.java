@@ -82,7 +82,8 @@ public class GameServlet extends HttpServlet {
 			Game game = null;
 			game = createGame(request);
 			gameDao.add(game);
-			index(request, response);
+//			index(request, response);
+			response.sendRedirect(request.getContextPath()+"/enterprise/IndexServlet");
 			return;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -21,6 +21,11 @@ public class IndexServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Volunteer v = (Volunteer) request.getSession().getAttribute("volunteer");
+		if(v==null) {
+			request.setAttribute("message", "您未登录");
+			request.getRequestDispatcher("/jsp/message.jsp").forward(request, response);
+			return;
+		}
 		String volunteerid = v.getId();
 		List<Game> gameList = gameDao.getList(0, 1000,volunteerid);
 		request.getSession().setAttribute("gameList", gameList);
