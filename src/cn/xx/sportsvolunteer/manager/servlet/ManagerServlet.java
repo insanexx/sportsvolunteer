@@ -10,15 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.xx.sportsvolunteer.beans.Enterprise;
+import cn.xx.sportsvolunteer.beans.Game;
 import cn.xx.sportsvolunteer.beans.Manager;
 import cn.xx.sportsvolunteer.beans.Volunteer;
 import cn.xx.sportsvolunteer.dao.EnterpriseDao;
+import cn.xx.sportsvolunteer.dao.GameDao;
 import cn.xx.sportsvolunteer.dao.ManagerDao;
 import cn.xx.sportsvolunteer.dao.VolunteerDao;
 import cn.xx.sportsvolunteer.dao.impl.EnterpriseDaoImpl;
+import cn.xx.sportsvolunteer.dao.impl.GameDaoImpl;
 import cn.xx.sportsvolunteer.dao.impl.ManagerDaoImpl;
 import cn.xx.sportsvolunteer.dao.impl.VolunteerDaoImpl;
-import cn.xx.sportsvolunteer.utils.MD5Util;
+import cn.xx.sportsvolunteer.utils.PasswordJM;
 
 @WebServlet("/manager/ManagerServlet")
 public class ManagerServlet extends HttpServlet {
@@ -26,6 +29,7 @@ public class ManagerServlet extends HttpServlet {
 	private ManagerDao mDao = new ManagerDaoImpl();
 	private VolunteerDao vDao = new VolunteerDaoImpl();
 	private EnterpriseDao eDao = new EnterpriseDaoImpl();
+	private GameDao gDao = new GameDaoImpl();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
@@ -53,6 +57,9 @@ public class ManagerServlet extends HttpServlet {
 		case "enterpriselist":
 			enterpriselist(request,response);
 			break;
+		case "listgamevolunteer":
+			listgamevolunteer(request,response);
+			break;
 		case "volunteerlist":
 			volunteerlist(request,response);
 			break;
@@ -61,6 +68,16 @@ public class ManagerServlet extends HttpServlet {
 		}
 	}
 	
+	private void listgamevolunteer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String gameid = request.getParameter("gameid");
+		Game game = gDao.getById(gameid);
+		List<Volunteer> list = vDao.getVolunteersByGame(gameid);
+		request.setAttribute("list", list);
+		request.setAttribute("game", game);
+		request.getRequestDispatcher("/jsp/manager/listgamevolunteer.jsp").forward(request, response);
+		return;
+	}
+
 	private void enterpriselist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Enterprise> list = eDao.getAll();
 		request.setAttribute("list", list);
@@ -69,7 +86,7 @@ public class ManagerServlet extends HttpServlet {
 	}
 
 	private void volunteerlist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Volunteer> list = vDao.getList(1, 9999);
+		List<Volunteer> list = vDao.getList(0, 9999);
 		request.setAttribute("list", list);
 		request.getRequestDispatcher("/jsp/manager/volunteerlist.jsp").forward(request, response);
 		return;
@@ -94,7 +111,7 @@ public class ManagerServlet extends HttpServlet {
 			request.getRequestDispatcher("/jsp/manager/login.jsp").forward(request, response);
 			return;
 		}
-		Manager manager = mDao.getByUsernameAndPassword(username,MD5Util.getMD5(password));
+		Manager manager = mDao.getByUsernameAndPassword(username,PasswordJM.getJMPWD(password));
 		if(manager==null) {
 			request.setAttribute("message", "用户名或者密码输入错误");
 			request.getRequestDispatcher("/jsp/manager/login.jsp").forward(request, response);

@@ -11,7 +11,7 @@ import java.util.List;
 
 import cn.xx.sportsvolunteer.beans.Game;
 import cn.xx.sportsvolunteer.dao.GameDao;
-import cn.xx.sportsvolunteer.utils.DBUtil;
+import cn.xx.sportsvolunteer.utils.MyDatabaseUtil;
 
 public class GameDaoImpl implements GameDao {
 
@@ -20,7 +20,7 @@ public class GameDaoImpl implements GameDao {
 		String sql = "insert into game(id,name,description,jobdescription,begintime,endtime,address,salary,enterpriseid,personcount) value(?,?,?,?,?,?,?,?,?,?)";
 		Connection conn = null;
 		PreparedStatement pst = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, g.getId());
@@ -59,7 +59,7 @@ public class GameDaoImpl implements GameDao {
 		String sql = "delete from game where id=?";
 		Connection conn = null;
 		PreparedStatement pst = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, id);
@@ -90,7 +90,7 @@ public class GameDaoImpl implements GameDao {
 				+ "endtime=?,address=?,salary=?,enterpriseid=?,personcount=? where id=?";
 		Connection conn = null;
 		PreparedStatement pst = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, g.getName());
@@ -131,7 +131,7 @@ public class GameDaoImpl implements GameDao {
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, id);
@@ -188,7 +188,7 @@ public class GameDaoImpl implements GameDao {
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, volunteerid);
@@ -246,11 +246,12 @@ public class GameDaoImpl implements GameDao {
 			pageIndex = 1;
 		}
 		List<Game> list = new ArrayList<Game>();
-		String sql = "select g.*,(select count(*) from game_volunteer gv where gv.gameid=g.id ) as enteredcount from game g where g.enterpriseid=? order by g.begintime asc limit ?,? ";//limit a,b==>a从0开始，取b个。
+		String sql = "select g.*,(select count(*) from game_volunteer gv where gv.gameid=g.id ) as enteredcount from game"
+				+ " g where g.enterpriseid=? order by g.begintime asc limit ?,? ";//limit a,b==>a从0开始，取b个。
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setInt(1, enterpriseid);
@@ -310,7 +311,7 @@ public class GameDaoImpl implements GameDao {
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setInt(1, (pageIndex-1)*pageSize);

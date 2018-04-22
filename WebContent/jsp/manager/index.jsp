@@ -59,13 +59,14 @@
 	            	<span class="d-block">赛事描述：${game.description }</span>
 	            	<span class="d-block">工作描述：${game.jobdescription }</span>
 	            	<span class="d-block">工作地点：${game.address }</span>
+	            	<span class="d-block">工资（元）：${game.salary }</span>
 	            	<span class="d-block">招募人数：${game.personcount }(剩余名额:${game.restcount })</span>
 		            <span>
 		            	<fmt:formatDate value="${game.begintime }" pattern="yyyy-MM-dd"/>
 		            	--&gt;<fmt:formatDate value="${game.endtime }" pattern="yyyy-MM-dd"/>
 		            </span>
 		            <div>
-		            	 <a target="_blank" href="${pageContext.request.contextPath }/manager/ManagerServlet?method=volunteerlist&gameid=${game.id}">查看报名列表</a>
+		            	 <a target="_blank" href="${pageContext.request.contextPath }/manager/ManagerServlet?method=listgamevolunteer&gameid=${game.id}">查看报名列表</a>
 		            </div>
 		          </div>
 		        </div>

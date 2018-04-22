@@ -5,9 +5,9 @@ import org.junit.Test;
 import cn.xx.sportsvolunteer.beans.Enterprise;
 import cn.xx.sportsvolunteer.dao.EnterpriseDao;
 import cn.xx.sportsvolunteer.dao.impl.EnterpriseDaoImpl;
-import cn.xx.sportsvolunteer.utils.DBUtil;
+import cn.xx.sportsvolunteer.utils.MyDatabaseUtil;
 import cn.xx.sportsvolunteer.utils.IdGenerator;
-import cn.xx.sportsvolunteer.utils.MD5Util;
+import cn.xx.sportsvolunteer.utils.PasswordJM;
 
 public class MyTest {
 	@Test
@@ -17,12 +17,12 @@ public class MyTest {
 	
 	@Test
 	public void testmd5() {
-		System.out.println(MD5Util.getMD5("admin"));	
+		System.out.println(PasswordJM.getJMPWD("admin"));	
 	}
 	
 	@Test
 	public void testjdbc() {
-		System.out.println(DBUtil.getConnection());	
+		System.out.println(MyDatabaseUtil.getConnection());	
 	}
 	
 	@Test
@@ -31,7 +31,7 @@ public class MyTest {
 		Enterprise m = new Enterprise();
 		m.setUsername("xiuxiu2");
 		m.setPassword("mmmmmm");
-		m.setPassword(MD5Util.getMD5(m.getPassword()));
+		m.setPassword(PasswordJM.getJMPWD(m.getPassword()));
 		mdao.add(m);
 	}
 }

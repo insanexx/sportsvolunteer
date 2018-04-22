@@ -9,7 +9,7 @@ import java.util.List;
 
 import cn.xx.sportsvolunteer.beans.Manager;
 import cn.xx.sportsvolunteer.dao.ManagerDao;
-import cn.xx.sportsvolunteer.utils.DBUtil;
+import cn.xx.sportsvolunteer.utils.MyDatabaseUtil;
 
 public class ManagerDaoImpl implements ManagerDao {
 
@@ -18,7 +18,7 @@ public class ManagerDaoImpl implements ManagerDao {
 		String sql = "insert into manager(id,username,password) value(?,?,?)";
 		Connection conn = null;
 		PreparedStatement pst = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setInt(1, m.getId());
@@ -50,7 +50,7 @@ public class ManagerDaoImpl implements ManagerDao {
 		String sql = "delete from manager where id=?";
 		Connection conn = null;
 		PreparedStatement pst = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setInt(1, id);
@@ -80,7 +80,7 @@ public class ManagerDaoImpl implements ManagerDao {
 		String sql = "update manager set username=?,password=? where id=?";
 		Connection conn = null;
 		PreparedStatement pst = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, m.getUsername());
@@ -114,7 +114,7 @@ public class ManagerDaoImpl implements ManagerDao {
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setInt(1, id);
@@ -160,7 +160,7 @@ public class ManagerDaoImpl implements ManagerDao {
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			rs = pst.executeQuery();
@@ -206,7 +206,7 @@ public class ManagerDaoImpl implements ManagerDao {
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, username);

@@ -18,7 +18,7 @@ import cn.xx.sportsvolunteer.dao.VolunteerDao;
 import cn.xx.sportsvolunteer.dao.impl.GameDaoImpl;
 import cn.xx.sportsvolunteer.dao.impl.VolunteerDaoImpl;
 import cn.xx.sportsvolunteer.utils.IdGenerator;
-import cn.xx.sportsvolunteer.utils.MD5Util;
+import cn.xx.sportsvolunteer.utils.PasswordJM;
 
 @WebServlet("/volunteer/VolunteerServlet")
 public class VolunteerServlet extends HttpServlet {
@@ -54,8 +54,32 @@ public class VolunteerServlet extends HttpServlet {
 		case "entergame":
 			entergame(request,response);
 			break;
+		case "updatevolunteer":
+			updatevolunteer(request,response);
+			break;
 		default:
 			break;
+		}
+	}
+
+	private void updatevolunteer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Volunteer v = createVolunteerforupdate(request);
+		Volunteer v_db = volunteerDao.getById(v.getId());
+		if(v.getPassword()==null) {
+			v.setPassword(v_db.getPassword());
+		}else {
+			v.setPassword(PasswordJM.getJMPWD(v.getPassword()));
+		}
+		try {
+			volunteerDao.update(v);
+			request.getSession().setAttribute("volunteer", v);
+			response.sendRedirect(request.getContextPath()+"/volunteer/IndexServlet");
+			return;
+		}catch(MySQLIntegrityConstraintViolationException e) {
+			request.setAttribute("message", "修改失败:用户名已被注册");
+			request.setAttribute("v", v);
+			request.getRequestDispatcher("/jsp/message.jsp").forward(request, response);
+			return;
 		}
 	}
 
@@ -108,7 +132,7 @@ public class VolunteerServlet extends HttpServlet {
 			request.getRequestDispatcher("/jsp/volunteer/login.jsp").forward(request, response);
 			return;
 		}
-		Volunteer volunteer = volunteerDao.getByUsernameAndPassword(username,MD5Util.getMD5(password));
+		Volunteer volunteer = volunteerDao.getByUsernameAndPassword(username,PasswordJM.getJMPWD(password));
 		if(volunteer==null) {
 			request.setAttribute("message", "用户名或者密码输入错误");
 			request.getRequestDispatcher("/jsp/volunteer/login.jsp").forward(request, response);
@@ -124,7 +148,7 @@ public class VolunteerServlet extends HttpServlet {
 		String errorMessage = null;
 		errorMessage = validate(v);
 		if(errorMessage==null) {
-			v.setPassword(MD5Util.getMD5(v.getPassword()));
+			v.setPassword(PasswordJM.getJMPWD(v.getPassword()));
 			try {
 				volunteerDao.add(v);
 			}catch(MySQLIntegrityConstraintViolationException e) {
@@ -205,6 +229,24 @@ public class VolunteerServlet extends HttpServlet {
 		Date registertime = new Date();
 		String id = IdGenerator.createId();
 		Volunteer v = new Volunteer(id, age, username, password, password2, gender, address, idcardnumber, phonenumber, specialskill, registertime);
+		return v;
+	}
+	
+	private Volunteer createVolunteerforupdate(HttpServletRequest request) {
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String gender = request.getParameter("gender");
+		String address = request.getParameter("address");
+		String idcardnumber = request.getParameter("idcardnumber");
+		String phonenumber = request.getParameter("phonenumber");
+		String specialskill = request.getParameter("specialskill");
+		int age = 0;
+		try {
+			age = Integer.parseInt(request.getParameter("age"));
+		}catch (NumberFormatException e) {
+		}
+		String id = request.getParameter("id");
+		Volunteer v = new Volunteer(id, age, username, password, null, gender, address, idcardnumber, phonenumber, specialskill, null);
 		return v;
 	}
 

@@ -40,48 +40,48 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h4 class="modal-title" id="myModalLabel">
-							发布新赛事
+							志愿者信息
 						</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 							&times;
 						</button>
 					</div>
-					<form action="${pageContext.request.contextPath }/manager/GameServlet?method=addgame" method="POST">
+					<form method="post" action="${pageContext.request.contextPath }/volunteer/VolunteerServlet?method=updatevolunteer">
+						<input type="hidden" id="id" name="id" value="${volunteer.id }">
 						<div class="modal-body">
-								<div class="input-group input-group-lg">
-								  <span class="input-group-addon" style="margin-top: 10px;">赛事名称：</span>
-								  <input type="text" class="form-control" placeholder="赛事名称" name="name" required="required">
-								</div>
-								<div class="input-group input-group-lg">
-								  <span class="input-group-addon" style="margin-top: 10px;">赛事描述：</span>
-								  <textarea class="form-control" placeholder="赛事描述" name="description" required="required"></textarea>
-								</div>
-								<div class="input-group input-group-lg">
-								  <span class="input-group-addon" style="margin-top: 10px;">工作描述：</span>
-								  <textarea class="form-control" placeholder="工作描述" name="jobdescription" required="required"></textarea>
-								</div>
-								<div class="input-group input-group-lg">
-								  <span class="input-group-addon" style="margin-top: 10px;">开始时间：</span>
-								  <input class="form-control" type="date" name="begintime" required="required">
-								  <span class="input-group-addon" style="margin-top: 10px;">结束时间：</span>
-								  <input class="form-control" type="date" name="endtime" required="required">
-								</div>
-								<div class="input-group input-group-lg">
-								  <span class="input-group-addon" style="margin-top: 10px;">赛事地点：</span>
-								  <input type="text" class="form-control" placeholder="赛事地点" name="address" required="required">
-								</div>
-								<div class="input-group input-group-lg">
-								  <span class="input-group-addon" style="margin-top: 10px;">
-								 <!--  工&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;资： -->
-								 工资（元）
-								  </span>
-								  <input type="number" class="form-control" placeholder="工资" name="salary" required="required">
-								</div>
+							<div class="input-group input-group-lg">
+							  <span class="input-group-addon" style="margin-top: 10px;">姓　　名：</span>
+							  <input type="text" class="form-control" id="username" name="username" value="${volunteer.username }">
+							</div>
+							<div class="input-group input-group-lg">
+							  <span class="input-group-addon" style="margin-top: 10px;">性　　别：</span>
+							  <input class="form-control" type="text" id="gender" name="gender" value="${volunteer.gender }"></input>
+							</div>
+							<div class="input-group input-group-lg">
+							  <span class="input-group-addon" style="margin-top: 10px;">年　　龄：</span>
+							  <input class="form-control" type="number" id="age" name="age" value="${volunteer.age }"></input>
+							</div>
+							<div class="input-group input-group-lg">
+							  <span class="input-group-addon" style="margin-top: 10px;">地　　址：</span>
+							  <textarea class="form-control" id="address" name="address">${volunteer.address }</textarea>
+							</div>
+							<div class="input-group input-group-lg">
+							  <span class="input-group-addon" style="margin-top: 10px;">身份证号：</span>
+							  <input class="form-control" type="number" id="idcardnumber" name="idcardnumber" value="${volunteer.idcardnumber }"></input>
+							</div>
+							<div class="input-group input-group-lg">
+							  <span class="input-group-addon" style="margin-top: 10px;">手机号码：</span>
+							  <input class="form-control" type="number" id="phonenumber" name="phonenumber" value="${volunteer.phonenumber }"></input>
+							</div>
+							<div class="input-group input-group-lg">
+							  <span class="input-group-addon" style="margin-top: 10px;">特　　长：</span>
+							  <textarea class="form-control" id="specialskill" name="specialskill" >${volunteer.specialskill }</textarea>
+							</div>
+							
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">关闭
-							</button>
-							<input type="submit" class="btn btn-primary" value="发布"></input>
+							<button  class="btn btn-primary" type="submit">确定</button>
+							<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
 						</div>
 					</form>
 				</div><!-- /.modal-content -->
@@ -94,6 +94,7 @@
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
         </ul>
+        <button class="btn btn-outline-success my-2 my-sm-0" onclick="showvolunteermessage('${v.username}','${v.gender }','${v.age }','${v.address }','${v.idcardnumber }','${v.phonenumber }','${v.specialskill }','${v.registertime }')" data-toggle="modal" data-target="#myModal">个人信息</button>
         <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath }/volunteer/VolunteerServlet?method=logout" method="POST">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">注销</button>
         </form>
@@ -128,6 +129,7 @@
 		            	<span class="d-block">赛事描述：${game.description }</span>
 		            	<span class="d-block">工作描述：${game.jobdescription }</span>
 		            	<span class="d-block">工作地点：${game.address }</span>
+		            	<span class="d-block">工资（元）：${game.salary }</span>
 		            	<span class="d-block">招募人数：${game.personcount }(剩余名额:${game.restcount })</span>
 		            <span>
 		            	<fmt:formatDate value="${game.begintime }" pattern="yyyy-MM-dd"/>

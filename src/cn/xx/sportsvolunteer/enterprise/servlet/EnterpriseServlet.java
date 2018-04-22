@@ -18,7 +18,7 @@ import cn.xx.sportsvolunteer.dao.VolunteerDao;
 import cn.xx.sportsvolunteer.dao.impl.EnterpriseDaoImpl;
 import cn.xx.sportsvolunteer.dao.impl.GameDaoImpl;
 import cn.xx.sportsvolunteer.dao.impl.VolunteerDaoImpl;
-import cn.xx.sportsvolunteer.utils.MD5Util;
+import cn.xx.sportsvolunteer.utils.PasswordJM;
 
 @WebServlet("/enterprise/EnterpriseServlet")
 public class EnterpriseServlet extends HttpServlet {
@@ -77,7 +77,7 @@ public class EnterpriseServlet extends HttpServlet {
 		String errorMessage = null;
 		errorMessage = validate(en);
 		if(errorMessage==null) {
-			en.setPassword(MD5Util.getMD5(en.getPassword()));
+			en.setPassword(PasswordJM.getJMPWD(en.getPassword()));
 			enDao.add(en);
 			//跳转登陆页面
 			request.setAttribute("message", "注册成功");
@@ -146,7 +146,7 @@ public class EnterpriseServlet extends HttpServlet {
 			request.getRequestDispatcher("/jsp/enterprise/login.jsp").forward(request, response);
 			return;
 		}
-		Enterprise enterprise = enDao.getByUsernameAndPassword(username,MD5Util.getMD5(password));
+		Enterprise enterprise = enDao.getByUsernameAndPassword(username,PasswordJM.getJMPWD(password));
 		if(enterprise==null) {
 			request.setAttribute("message", "用户名或者密码输入错误");
 			request.getRequestDispatcher("/jsp/enterprise/login.jsp").forward(request, response);

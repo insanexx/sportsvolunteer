@@ -10,7 +10,7 @@ import cn.xx.sportsvolunteer.beans.Volunteer;
 public interface VolunteerDao {
 	public void add(Volunteer v) throws MySQLIntegrityConstraintViolationException;
 	public void delete(String id);
-	public void update(Volunteer v);
+	public void update(Volunteer v) throws MySQLIntegrityConstraintViolationException;
 	public Volunteer getById(String id);
 	public List<Volunteer> getList(int pageIndex,int pageSize);
 	public Volunteer getByUsernameAndPassword(String username, String password);

@@ -13,7 +13,7 @@ import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationExceptio
 import cn.xx.sportsvolunteer.beans.Game;
 import cn.xx.sportsvolunteer.beans.Volunteer;
 import cn.xx.sportsvolunteer.dao.VolunteerDao;
-import cn.xx.sportsvolunteer.utils.DBUtil;
+import cn.xx.sportsvolunteer.utils.MyDatabaseUtil;
 
 public class VolunteerDaoImpl implements VolunteerDao {
 
@@ -22,7 +22,7 @@ public class VolunteerDaoImpl implements VolunteerDao {
 		String sql = "insert into volunteer(id,username,password,age,gender,address,idcardnumber,phonenumber,specialskill,registertime) value(?,?,?,?,?,?,?,?,?,?)";
 		Connection conn = null;
 		PreparedStatement pst = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, v.getId());
@@ -63,7 +63,7 @@ public class VolunteerDaoImpl implements VolunteerDao {
 		String sql = "delete from volunteer where id=?";
 		Connection conn = null;
 		PreparedStatement pst = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, id);
@@ -89,12 +89,12 @@ public class VolunteerDaoImpl implements VolunteerDao {
 	}
 
 	@Override
-	public void update(Volunteer v) {
+	public void update(Volunteer v) throws MySQLIntegrityConstraintViolationException {
 		String sql = "update volunteer set username=?,password=?,age=?,gender=?,"
 				+ "address=?,idcardnumber=?,phonenumber=?,specialskill=? where id=?";//registertime不需要修改
 		Connection conn = null;
 		PreparedStatement pst = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, v.getUsername());
@@ -107,6 +107,8 @@ public class VolunteerDaoImpl implements VolunteerDao {
 			pst.setString(8, v.getSpecialskill());
 			pst.setString(9, v.getId());
 			pst.executeUpdate();
+		}catch(MySQLIntegrityConstraintViolationException e) {
+			throw e;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally{
@@ -134,7 +136,7 @@ public class VolunteerDaoImpl implements VolunteerDao {
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, id);
@@ -190,7 +192,7 @@ public class VolunteerDaoImpl implements VolunteerDao {
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setInt(1, (pageIndex-1)*pageSize);
@@ -245,7 +247,7 @@ public class VolunteerDaoImpl implements VolunteerDao {
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, username);
@@ -296,7 +298,7 @@ public class VolunteerDaoImpl implements VolunteerDao {
 		String sql = "insert into game_volunteer(gameid,volunteerid) value(?,?)";
 		Connection conn = null;
 		PreparedStatement pst = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, game.getId());
@@ -329,7 +331,7 @@ public class VolunteerDaoImpl implements VolunteerDao {
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, game.getId());
@@ -374,7 +376,7 @@ public class VolunteerDaoImpl implements VolunteerDao {
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, gameid);

@@ -9,7 +9,7 @@ import java.util.List;
 
 import cn.xx.sportsvolunteer.beans.Enterprise;
 import cn.xx.sportsvolunteer.dao.EnterpriseDao;
-import cn.xx.sportsvolunteer.utils.DBUtil;
+import cn.xx.sportsvolunteer.utils.MyDatabaseUtil;
 
 public class EnterpriseDaoImpl implements EnterpriseDao {
 
@@ -18,7 +18,7 @@ public class EnterpriseDaoImpl implements EnterpriseDao {
 		String sql = "insert into enterprise(id,username,password,enterpriseName,address,phonenumber,business) value(?,?,?,?,?,?,?)";
 		Connection conn = null;
 		PreparedStatement pst = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setInt(1, enterprise.getId());
@@ -54,7 +54,7 @@ public class EnterpriseDaoImpl implements EnterpriseDao {
 		String sql = "delete from enterprise where id=?";
 		Connection conn = null;
 		PreparedStatement pst = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setInt(1, id);
@@ -84,7 +84,7 @@ public class EnterpriseDaoImpl implements EnterpriseDao {
 		String sql = "update enterprise set username=?,password=?,enterpriseName=?,address=?,phonenumber=?,business=? where id=?";
 		Connection conn = null;
 		PreparedStatement pst = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, enterprise.getUsername());
@@ -122,7 +122,7 @@ public class EnterpriseDaoImpl implements EnterpriseDao {
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setInt(1, id);
@@ -172,7 +172,7 @@ public class EnterpriseDaoImpl implements EnterpriseDao {
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			rs = pst.executeQuery();
@@ -222,7 +222,7 @@ public class EnterpriseDaoImpl implements EnterpriseDao {
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		conn = DBUtil.getConnection();
+		conn = MyDatabaseUtil.getConnection();
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, username);

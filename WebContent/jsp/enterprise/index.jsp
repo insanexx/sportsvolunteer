@@ -123,6 +123,7 @@
 	            	<span class="d-block">赛事描述：${game.description }</span>
 	            	<span class="d-block">工作描述：${game.jobdescription }</span>
 	            	<span class="d-block">工作地点：${game.address }</span>
+	            	<span class="d-block">工资（元）：${game.salary }</span>
 	            	<span class="d-block">招募人数：${game.personcount }(剩余名额:${game.restcount })</span>
 		            <span>
 		            	<fmt:formatDate value="${game.begintime }" pattern="yyyy-MM-dd"/>

@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>企业列表</title>
+    <title>志愿者列表</title>
 
     <link href="${pageContext.request.contextPath }/bootstrap-4.0.0-dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath }/css/jumbotron.css" rel="stylesheet">
