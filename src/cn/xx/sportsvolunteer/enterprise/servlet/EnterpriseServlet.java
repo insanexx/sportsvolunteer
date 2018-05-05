@@ -129,7 +129,7 @@ public class EnterpriseServlet extends HttpServlet {
 
 	private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		request.getSession().removeAttribute("enterprise");
-		response.sendRedirect(request.getContextPath()+"/jsp/enterprise/login.jsp");
+		response.sendRedirect(request.getContextPath()+"/jsp/index.jsp");
 		return;
 	}
 

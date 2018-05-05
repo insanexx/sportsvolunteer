@@ -115,7 +115,7 @@ public class VolunteerServlet extends HttpServlet {
 
 	private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		request.getSession().removeAttribute("volunteer");
-		response.sendRedirect(request.getContextPath()+"/jsp/volunteer/login.jsp");
+		response.sendRedirect(request.getContextPath()+"/jsp/index.jsp");
 		return;
 	}
 

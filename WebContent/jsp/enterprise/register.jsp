@@ -16,7 +16,7 @@
 	 <form class="form-horizontal" style="padding: 30px 100px 10px;" action="${pageContext.request.contextPath }/enterprise/EnterpriseServlet?method=register" method="POST">
       <img class="mb-4" src="${pageContext.request.contextPath }/img/2.png" alt="" width="72" height="72">
       &nbsp;&nbsp;&nbsp;
- 	  <span style="font-size:30px;" class="jumbotron-heading">志愿者报名系统-用户注册</span>
+ 	  <span style="font-size:30px;" class="jumbotron-heading">志愿者报名系统-企业注册</span>
 
 		<div class="form-group">
 			<label for="username" class="col-sm-2 control-label">用户名：</label>

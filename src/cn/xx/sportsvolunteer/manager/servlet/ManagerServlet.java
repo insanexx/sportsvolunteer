@@ -94,7 +94,7 @@ public class ManagerServlet extends HttpServlet {
 
 	private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		request.getSession().removeAttribute("manager");
-		response.sendRedirect(request.getContextPath()+"/jsp/manager/login.jsp");
+		response.sendRedirect(request.getContextPath()+"/jsp/index.jsp");
 		return;
 	}
 

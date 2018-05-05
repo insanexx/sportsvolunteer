@@ -1,36 +1,47 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>enterprise login</title>
-    <link href="${pageContext.request.contextPath }/bootstrap-4.0.0-dist/css/bootstrap.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath }/css/signin.css" rel="stylesheet">
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>登录</title>
+	<meta name="renderer" content="webkit">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/css/login.css" type="text/css" />
     <script src="${pageContext.request.contextPath }/jquery-3.1.0/jquery-3.1.0.min.js"></script>
-  </head>
-  <body class="text-center">
-  	<label id="msg" style="display:none">${requestScope.message }</label>
-    <form class="form-signin" action="${pageContext.request.contextPath }/enterprise/EnterpriseServlet?method=login" method="POST">
-      <img class="mb-4" src="${pageContext.request.contextPath }/img/2.png" alt="" width="72" height="72">
- 	  <h1 class="jumbotron-heading">志愿者报名系统</h1>
- 	  <h3>企业登录</h3>
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-      <label for="inputEmail" class="sr-only">用户名</label>
-      <input type="text" id="inputEmail" class="form-control" placeholder="用户名" required autofocus name="username" value="${en.username }">
-      <label for="inputPassword" class="sr-only">密码</label>
-      <input type="password" id="inputPassword" class="form-control" placeholder="密码" required name="password">
-      <button class="btn btn-lg btn-primary btn-block" type="submit">登陆</button>
-      <br/>
-      <a href="${pageContext.request.contextPath }/jsp/enterprise/register.jsp">立即注册</a>
-      <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
-    </form>
-  </body>
-  <script>
-  	/* var msg = $("#msg");
-  	if(msg.text()){
-  		alert(msg.text());
-  	} */
-  </script>
+    <style type="text/css">
+    	body{
+    		background: url(../img/login.png) repeat center 0px;
+    	}
+    </style>
+</head>
+<body >
+	<div class="page-con">
+		<h1 class="jumbotron-heading"><a href="${pageContext.request.contextPath }/jsp/index.jsp">志愿者报名系统</a></h1>
+		<div>
+			<span id="logo-text">企业登录<label>V<span class="logo-dot rotate"></span></label></span>
+		</div>
+		<div>
+			<form name="loginform" id="loginform" action="${pageContext.request.contextPath }/enterprise/EnterpriseServlet?method=login" method="POST">
+				<div style="margin-top: 25px; position: relative;">
+					<input id="username" name="username" value="${en.username }" class="txt" type="text" placeholder='账号' />
+				</div>
+				<div class="login-input" style="margin-top: 20px; position: relative;">
+					<input name="password" id="password" class="txt" type="password" placeholder='密码' />
+				</div>
+				<div style="margin-top: 20px;">
+					<span id="signin_btn" onclick="login()" class="button">立即登录</span>
+				</div>
+				<input id="loginsubmit" type="submit" style="display:none;">
+			</form>
+		</div>
+		<div class="signup" style="text-align:center;">
+			<a href="${pageContext.request.contextPath }/jsp/enterprise/register.jsp">注册</a>
+		</div>
+	</div>
+</body>
+<script>
+	function login(){
+		$("#loginsubmit").click();
+	}
+</script>
 </html>

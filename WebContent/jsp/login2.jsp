@@ -16,14 +16,13 @@
 </head>
 <body >
 	<div class="page-con">
-		<h1 class="jumbotron-heading"><a href="${pageContext.request.contextPath }/jsp/index.jsp">志愿者报名系统</a></h1>
 		<div>
-			<span id="logo-text">志愿者登录<label>V<span class="logo-dot rotate"></span></label></span>
+			<span id="logo-text">Process<label>On<span class="logo-dot rotate"></span></label></span>
 		</div>
 		<div>
-			<form name="loginform" id="loginform" action="${pageContext.request.contextPath }/volunteer/VolunteerServlet?method=login" method="POST">
+			<form name="loginform" id="loginform" action="#" method="post">
 				<div style="margin-top: 25px; position: relative;">
-					<input id="username" name="username" value="${v.username }" class="txt" type="text" placeholder='账号' />
+					<input id="username" name="username" value="" class="txt" type="text" placeholder='账号' />
 				</div>
 				<div class="login-input" style="margin-top: 20px; position: relative;">
 					<input name="password" id="password" class="txt" type="password" placeholder='密码' />
@@ -34,8 +33,8 @@
 				<input id="loginsubmit" type="submit" style="display:none;">
 			</form>
 		</div>
-		<div class="signup" style="text-align:center;">
-			<a href="${pageContext.request.contextPath }/jsp/volunteer/register.jsp">立即注册</a>
+		<div class="signup">
+			<a href="#">注册</a>
 		</div>
 	</div>
 </body>
