@@ -105,14 +105,14 @@ public class GameServlet extends HttpServlet {
 		String personcount_str = request.getParameter("personcount");
 		//
 		String id = IdGenerator.createId();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/mm/dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		Date begintime = null;
 		Date endtime = null;
 		try {
 			begintime = sdf.parse(begintime_str);
 			endtime = sdf.parse(endtime_str);
 		} catch (ParseException e) {
-			sdf = new SimpleDateFormat("yyyy-mm-dd");
+			sdf = new SimpleDateFormat("yyyy-MM-dd");
 			try {
 				begintime = sdf.parse(begintime_str);
 				endtime = sdf.parse(endtime_str);

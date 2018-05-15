@@ -17,8 +17,8 @@
    <script src="${pageContext.request.contextPath }/js/popper.min.js"></script>
     <style type="text/css">
     	body{
-    		background: url(../img/bg.jpg) repeat center 0px;
-    		/* background: url(../img/login.png) repeat center 0px; */
+    		/* background: url(../img/bg.jpg) repeat center 0px; */
+    		 background: url(../img/login.png) repeat center 0px; 
     	}
 	    .input-group-lg>.form-control {
 	   		font-size: 1rem;
